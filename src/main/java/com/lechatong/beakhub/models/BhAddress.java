@@ -72,6 +72,8 @@ public class BhAddress implements Serializable {
         this.updatdedAt = updatdedAt;
     }
 
+    public Integer getId() { return id; }
+
     public String getTitle() {
         return title;
     }

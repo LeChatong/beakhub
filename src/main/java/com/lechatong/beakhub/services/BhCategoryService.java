@@ -5,6 +5,7 @@ import com.lechatong.beakhub.repositories.BhCategoryRepository;
 import com.lechatong.beakhub.utils.APIResponse;
 import com.lechatong.beakhub.utils.ResponseCode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,10 +20,12 @@ public class BhCategoryService {
     private BhCategoryRepository repo;
 
     private APIResponse resp;
+    private BhCategory category;
+    private List<BhCategory> categories;
 
     public APIResponse create_category(BhCategory bhCategory){
         resp = new APIResponse();
-        BhCategory category = new BhCategory();
+        category = new BhCategory();
         try{
             category = repo.save(bhCategory);
             if(repo.existsById(category.getId())){
@@ -44,7 +47,7 @@ public class BhCategoryService {
 
     public APIResponse update_category(BhCategory bhCategory){
         resp = new APIResponse();
-        BhCategory category = new BhCategory();
+        category = new BhCategory();
         try{
             category = repo.save(bhCategory);
             if(repo.existsById(category.getId())){
@@ -88,10 +91,10 @@ public class BhCategoryService {
     public APIResponse list_category() {
         resp = new APIResponse();
 
-        List<BhCategory> categories = new ArrayList<BhCategory>();
+        categories = new ArrayList<>();
 
         try{
-            categories = repo.findAll();
+            categories = repo.findAll(Sort.by(Sort.Direction.ASC, "title"));
             if(!categories.isEmpty()){
                 resp.setData(categories);
                 resp.setStatus(ResponseCode.SUCCESS);
@@ -114,7 +117,7 @@ public class BhCategoryService {
 
         try{
             category = repo.findById(id);
-            if(category != null ){
+            if(category.isPresent()){
                 resp.setData(category);
                 resp.setStatus(ResponseCode.SUCCESS);
             }else{

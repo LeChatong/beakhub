@@ -28,7 +28,7 @@ public class BhJobController {
     @GetMapping("/list")
     public APIResponse getAllJob(){ return service.list_job();}
 
-    @GetMapping("/user/{user_id]}")
+    @GetMapping("/user/{user_id}")
     public APIResponse getAllJobByUserId(@PathVariable Integer user_id){ return service.list_job_by_user_id(user_id);}
 
     @GetMapping("/category/{category_id}")

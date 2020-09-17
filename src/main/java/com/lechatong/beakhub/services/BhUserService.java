@@ -44,7 +44,6 @@ public class BhUserService {
             resp.setMessage(e.getMessage());
             resp.setStatus(ResponseCode.SERVER_ERROR);
         }
-
         return resp;
     }
 
@@ -52,6 +51,7 @@ public class BhUserService {
         resp = new APIResponse();
         BhUser user = new BhUser();
         try{
+            bhUser.setUpdatdedAt(new Date());
             user = repo.save(bhUser);
             if(repo.existsById(user.getId())){
                 resp.setData(user);
@@ -96,7 +96,7 @@ public class BhUserService {
         Optional<BhUser> user;
         try{
             user = repo.findById(id);
-            if(user != null ){
+            if(user.isPresent() ){
                 resp.setData(user);
                 resp.setStatus(ResponseCode.SUCCESS);
             }else{
@@ -112,11 +112,8 @@ public class BhUserService {
     }
 
     public APIResponse list_user(){
-
         resp = new APIResponse();
-
         List<BhUser> users = new ArrayList<BhUser>();
-
         try{
             users = repo.findAll();
             if(!users.isEmpty()){

@@ -20,11 +20,11 @@ public interface BhJobRepository extends JpaRepository<BhJob, Integer> {
     @Override
     BhJob getOne(Integer integer);
 
-    @Query("SELECT j.* FROM bh_job j WHERE j.user_id = :user_id")
-    List<BhJob> getBhJobByIdUser(@Param("user_id") Integer integer);
+    @Query(value = "SELECT j.* FROM bh_job j WHERE j.user_id = :user_id", nativeQuery = true)
+    List<BhJob> getBhJobByIdUser(@Param("user_id") Integer user_id);
 
-    @Query("SELECT j.* FROM bh_job j WHERE j.category_id = :category_id")
-    List<BhJob> getBhJobByIdCategory(@Param("category_id") Integer integer);
+    @Query(value = "SELECT j.* FROM bh_job j WHERE j.category_id = :category_id", nativeQuery = true)
+    List<BhJob> getBhJobByIdCategory(@Param("category_id") Integer category_id);
 
     @Override
     List<BhJob> findAll();
