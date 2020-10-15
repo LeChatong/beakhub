@@ -3,6 +3,7 @@ package com.lechatong.beakhub.services;
 import com.lechatong.beakhub.models.BhAccount;
 import com.lechatong.beakhub.repositories.BhAccountRepository;
 import com.lechatong.beakhub.utils.APIResponse;
+import com.lechatong.beakhub.utils.Login;
 import com.lechatong.beakhub.utils.ResponseCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -89,7 +90,7 @@ public class BhAccountService {
         Optional<BhAccount> account;
         try{
             account = repo.findById(id);
-            if(account != null ){
+            if(account.isPresent() ){
                 resp.setData(account);
                 resp.setStatus(ResponseCode.SUCCESS);
             }else{
@@ -114,6 +115,50 @@ public class BhAccountService {
                 resp.setStatus(ResponseCode.SUCCESS);
             }else{
                 resp.setData(accounts);
+                resp.setStatus(ResponseCode.NOT_FOUND);
+            }
+        }catch(Exception e){
+            resp.setData(null);
+            resp.setMessage(e.getMessage());
+            resp.setStatus(ResponseCode.SERVER_ERROR);
+        }
+        return resp;
+    }
+
+    public APIResponse login(Login login){
+        resp = new APIResponse();
+        Optional<BhAccount> account;
+        try{
+            account = repo.login(login.getUsername(), login.getPassword());
+            if(account.isPresent() ){
+                resp.setData(account);
+                resp.setMessage("Account Found");
+                resp.setStatus(ResponseCode.SUCCESS);
+            }else{
+                resp.setData(account);
+                resp.setMessage("Account Not Found");
+                resp.setStatus(ResponseCode.NOT_FOUND);
+            }
+        }catch(Exception e){
+            resp.setData(null);
+            resp.setMessage(e.getMessage());
+            resp.setStatus(ResponseCode.SERVER_ERROR);
+        }
+        return resp;
+    }
+
+    public APIResponse login(String username, String password){
+        resp = new APIResponse();
+        Optional<BhAccount> account;
+        try{
+            account = repo.login(username, password);
+            if(account.isPresent() ){
+                resp.setData(account);
+                resp.setMessage("Account Found");
+                resp.setStatus(ResponseCode.SUCCESS);
+            }else{
+                resp.setData(account);
+                resp.setMessage("Account Not Found");
                 resp.setStatus(ResponseCode.NOT_FOUND);
             }
         }catch(Exception e){
